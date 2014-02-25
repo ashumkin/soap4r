@@ -9,12 +9,12 @@ GEM
   specs:
     bump (0.4.2)
     httpclient (2.3.4.1)
-    rake (10.1.0)
+    rake (10.0.4)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
   bump
-  rake
+  rake (>= 10.0.4)
   soap2r!

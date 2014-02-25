@@ -2,4 +2,4 @@ source "https://rubygems.org"
 gemspec
 
 gem 'bump'
-gem 'rake'
+gem 'rake', '>= 10.0.4'
