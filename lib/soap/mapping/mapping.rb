@@ -91,10 +91,18 @@ module Mapping
   def self.fault2exception(fault, registry = nil)
     registry ||= Mapping::DefaultRegistry
     detail = ""
-    if fault.detail
+    if fault_node = fault.detail
       begin
-        fault.detail.type ||= XSD::QName::EMPTY
-        detail = soap2obj(fault.detail, registry) || ""
+        if ! (fault_node.type && fault_node.elename != fault_node.type)
+            if fault_node.entries.count > 0 \
+                  && (fault_node.entries.first[1].kind_of?(SOAP::SOAPStruct) \
+                    || fault_node.entries.first[1].kind_of?(SOAP::SOAPElement))
+                fault_node = fault_node.entries.first[1]
+            end
+
+            fault_node.type ||= XSD::QName::EMPTY
+        end
+        detail = soap2obj(fault_node, registry) || ""
       rescue MappingError
         detail = fault.detail
       end
@@ -118,7 +126,11 @@ module Mapping
           [detail.to_s]
         end
       )
-      raise
+      if fault.detail.kind_of?(Exception)
+          raise fault.detail
+      else
+          raise
+      end
     end
   end
 
