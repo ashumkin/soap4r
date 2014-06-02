@@ -83,7 +83,7 @@ private
     @mr_filename = @name + 'MappingRegistry.rb'
     check_file(@mr_filename) or return
     write_file(@mr_filename) do |f|
-      f << "require '#{@classdef_filename}'\n" if @classdef_filename
+      f << "require File.expand_path('../#{@classdef_filename}', __FILE__)\n" if @classdef_filename
       f << WSDL::SOAP::MappingRegistryCreator.new(@wsdl, @name_creator, @modulepath).dump
     end
   end
@@ -96,7 +96,7 @@ private
     check_file(@client_skelton_filename) or return
     write_file(@client_skelton_filename) do |f|
       f << shbang << "\n"
-      f << "require '#{@driver_filename}'\n\n" if @driver_filename
+      f << "require File.expand_path('../#{@driver_filename}', __FILE__)\n\n" if @driver_filename
       f << WSDL::SOAP::ClientSkeltonCreator.new(@wsdl, @name_creator, @modulepath).dump(create_name(servicename))
     end
   end
@@ -106,7 +106,7 @@ private
     @servant_skelton_filename = (porttypename || @name + 'Servant') + '.rb'
     check_file(@servant_skelton_filename) or return
     write_file(@servant_skelton_filename) do |f|
-      f << "require '#{@classdef_filename}'\n\n" if @classdef_filename
+      f << "require File.expand_path('../#{@classdef_filename}', __FILE__)\n\n" if @classdef_filename
       f << WSDL::SOAP::ServantSkeltonCreator.new(@wsdl, @name_creator, @modulepath).dump(create_name(porttypename))
     end
   end
@@ -118,8 +118,8 @@ private
     check_file(@cgi_stubFilename) or return
     write_file(@cgi_stubFilename) do |f|
       f << shbang << "\n"
-      f << "require '#{@servant_skelton_filename}'\n" if @servant_skelton_filename
-      f << "require '#{@mr_filename}'\n" if @mr_filename
+      f << "require File.expand_path('../#{@servant_skelton_filename}', __FILE__)\n" if @servant_skelton_filename
+      f << "require File.expand_path('../#{@mr_filename}', __FILE__)\n" if @mr_filename
       f << WSDL::SOAP::CGIStubCreator.new(@wsdl, @name_creator, @modulepath).dump(create_name(servicename))
     end
   end
@@ -131,8 +131,8 @@ private
     check_file(@standalone_server_stub_filename) or return
     write_file(@standalone_server_stub_filename) do |f|
       f << shbang << "\n"
-      f << "require '#{@servant_skelton_filename}'\n" if @servant_skelton_filename
-      f << "require '#{@mr_filename}'\n" if @mr_filename
+      f << "require File.expand_path('../#{@servant_skelton_filename}', __FILE__)\n" if @servant_skelton_filename
+      f << "require File.expand_path('../#{@mr_filename}', __FILE__)\n" if @mr_filename
       f << WSDL::SOAP::StandaloneServerStubCreator.new(@wsdl, @name_creator, @modulepath).dump(create_name(servicename))
     end
   end
@@ -144,8 +144,8 @@ private
     check_file(@servlet_stub_filename) or return
     write_file(@servlet_stub_filename) do |f|
       f << shbang << "\n"
-      f << "require '#{@servant_skelton_filename}'\n" if @servant_skelton_filename
-      f << "require '#{@mr_filename}'\n" if @mr_filename
+      f << "require File.expand_path('../#{@servant_skelton_filename}', __FILE__)\n" if @servant_skelton_filename
+      f << "require File.expand_path('../#{@mr_filename}', __FILE__)\n" if @mr_filename
       f << WSDL::SOAP::ServletStubCreator.new(@wsdl, @name_creator, @modulepath).dump(create_name(servicename))
     end
   end
@@ -157,8 +157,8 @@ private
     creator.drivername_postfix = drivername_postfix
     check_file(@driver_filename) or return
     write_file(@driver_filename) do |f|
-      f << "require '#{@classdef_filename}'\n" if @classdef_filename
-      f << "require '#{@mr_filename}'\n" if @mr_filename
+      f << "require File.expand_path('../#{@classdef_filename}', __FILE__)\n" if @classdef_filename
+      f << "require File.expand_path('../#{@mr_filename}', __FILE__)\n" if @mr_filename
       f << creator.dump(create_name(porttypename))
     end
   end
